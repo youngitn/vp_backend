@@ -9,11 +9,11 @@ public interface DecathlonInvoiceInfo {
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	Date getInvoiceDate();
 
-	String orderNum();
+	String getOrderNum();
 
 	String getProductName();
 
-	String getProductNum();
+	String getCusProductNum();
 
 	String getQty();
 
