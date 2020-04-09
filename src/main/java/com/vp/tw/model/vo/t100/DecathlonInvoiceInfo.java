@@ -6,6 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 public interface DecathlonInvoiceInfo {
 
+	
+	
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	Date getInvoiceDate();
 
@@ -21,5 +23,7 @@ public interface DecathlonInvoiceInfo {
 
 	String getInvoiceNum();
 
-	String getReceivableNum();
+	String getReceivableNum();// 帳款單號(應收單號)
+
+	
 }
