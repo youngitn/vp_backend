@@ -11,7 +11,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -85,16 +88,11 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		String fileName = dt[0].substring(2) + String.format("%02d", Integer.parseInt(dt[1]));
 		List<DecathlonInvoiceInfoSheet> sheets = createDecathlonInvoiceInfo(start, end);
 
-		List<String> sheetNameList = new ArrayList<String>();
-		for (DecathlonInvoiceInfoSheet sheet : sheets) {
-			sheetNameList.add(sheet.getSheetName());
-		}
-
 		/**
 		 * 產生單一sheet EXCEL檔後轉PDF
 		 */
 		/* read一次樣板 */
-
+		
 		for (DecathlonInvoiceInfoSheet sheet : sheets) {
 			checkDirectories(zipPath);
 			checkDirectories(decathlonInvoiceExportPdfPath);
@@ -114,12 +112,17 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 					List<DecathlonInvoiceInfoSheet> sheetList = new ArrayList<>();
 					sheetList.add(sheet);
 					context.putVar("sheets", sheetList);
+					
+					//System.out.println("------>" + dateString + " " + String.format("%02d", number));
+					//context.putVar("invNum", dateString + " " + String.format("%02d", number));
+					
 					context.putVar("details", sheet.getDetails());
 					context.putVar("image", imageBytes);
 
 					JxlsHelper.getInstance().setEvaluateFormulas(true).processTemplate(is, os, context);
 				}
 				Workbook wb = new Workbook();
+
 				wb.loadFromFile(filePath);
 
 				wb.saveToFile(decathlonInvoiceExportPdfPath + name + ".pdf", FileFormat.PDF);
@@ -167,7 +170,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 */
 	@Override
 	public String importDataToExcelTemplet(String start, String end) throws FileNotFoundException, IOException {
-		
+
 		checkDirectories(excelDir);
 		// 檔名處理
 		String[] dt = start.split("/");
@@ -176,7 +179,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		String excelFilePath = excelDir + excelFileName;
 
 		List<DecathlonInvoiceInfoSheet> sheets = createDecathlonInvoiceInfo(start, end);
-
+		Collections.sort(sheets);
 		List<String> sheetNameList = new ArrayList<>();
 		for (DecathlonInvoiceInfoSheet sheet : sheets) {
 			sheetNameList.add(sheet.getSheetName());
@@ -222,14 +225,40 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 			}
 		}
 
+		
+		/*將分組好的detail資料放進sheet裡,再將sheet放進sheets*/
 		List<DecathlonInvoiceInfoSheet> sheets = new ArrayList<DecathlonInvoiceInfoSheet>();
 		for (String receivableNum : skuIdMap.keySet()) {
 			List<DecathlonInvoiceInfo> detail = skuIdMap.get(receivableNum);
 			Date invDate = detail.get(0).getInvoiceDate();
-			sheets.add(new DecathlonInvoiceInfoSheet(receivableNum, invDate, detail));
+			
+			sheets.add(new DecathlonInvoiceInfoSheet(receivableNum, invDate, detail,""));
 		}
-
+		
+		/*將sheets根據日期排序*/
+		Collections.sort(sheets);
+		
+		/*根據日期gen出 inNum=日期+流水號*/
+		List<String> sheetNameList = new ArrayList<String>();
+		int number = 1;
+		String tempDate = "";
+		for (DecathlonInvoiceInfoSheet sheet : sheets) {
+			sheetNameList.add(sheet.getSheetName());
+			SimpleDateFormat formatter = new SimpleDateFormat("yyMMdd");
+			String dateString = formatter.format(sheet.getInvDate());
+			if (dateString.equals(tempDate)) {
+				number++;
+			}else {
+				number = 1;
+			}
+			sheet.setInvNum(dateString + " " + String.format("%02d", number));
+			//sheets.add(sheet);
+			tempDate = dateString;
+		}
+		
 		return sheets;
 	}
+	
+
 
 }
