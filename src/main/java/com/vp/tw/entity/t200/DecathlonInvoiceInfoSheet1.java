@@ -1,4 +1,4 @@
-package com.vp.tw.entity.t100;
+package com.vp.tw.entity.t200;
 
 import java.beans.JavaBean;
 import java.util.ArrayList;
@@ -13,15 +13,8 @@ import lombok.Data;
 @JavaBean
 @Data
 @AllArgsConstructor
-public class DecathlonInvoiceInfoSheet implements Comparable<DecathlonInvoiceInfoSheet> {
+public class DecathlonInvoiceInfoSheet1 {
 	private String sheetName;
 	private Date invDate;
 	private List<DecathlonInvoiceInfo> details = new ArrayList<DecathlonInvoiceInfo>();
-	private String invNum;
-
-	@Override
-	public int compareTo(DecathlonInvoiceInfoSheet o) {
-
-		return getInvDate().compareTo(o.getInvDate());
-	}
 }
