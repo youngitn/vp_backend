@@ -82,7 +82,12 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 */
 	@Override
 	public String excelToPdf(String start, String end) throws IOException, ParseException {
+		deleteDirectory(tempExcelPath);
+		deleteDirectory(decathlonInvoiceExportPdfPath);
+		deleteDirectory(zipPath);
 		checkDirectories(tempExcelPath);
+		checkDirectories(zipPath);
+		checkDirectories(decathlonInvoiceExportPdfPath);
 		// 檔名處理
 		String[] dt = start.split("/");
 		String fileName = dt[0].substring(2) + String.format("%02d", Integer.parseInt(dt[1]));
@@ -92,10 +97,9 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		 * 產生單一sheet EXCEL檔後轉PDF
 		 */
 		/* read一次樣板 */
-		
+
 		for (DecathlonInvoiceInfoSheet sheet : sheets) {
-			checkDirectories(zipPath);
-			checkDirectories(decathlonInvoiceExportPdfPath);
+			
 			String name = sheet.getSheetName();
 			// 暫存資料夾
 			String filePath = tempExcelPath + name + ".xlsx";
@@ -112,10 +116,11 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 					List<DecathlonInvoiceInfoSheet> sheetList = new ArrayList<>();
 					sheetList.add(sheet);
 					context.putVar("sheets", sheetList);
-					
-					//System.out.println("------>" + dateString + " " + String.format("%02d", number));
-					//context.putVar("invNum", dateString + " " + String.format("%02d", number));
-					
+
+					// System.out.println("------>" + dateString + " " + String.format("%02d",
+					// number));
+					// context.putVar("invNum", dateString + " " + String.format("%02d", number));
+
 					context.putVar("details", sheet.getDetails());
 					context.putVar("image", imageBytes);
 
@@ -225,20 +230,19 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 			}
 		}
 
-		
-		/*將分組好的detail資料放進sheet裡,再將sheet放進sheets*/
+		/* 將分組好的detail資料放進sheet裡,再將sheet放進sheets */
 		List<DecathlonInvoiceInfoSheet> sheets = new ArrayList<DecathlonInvoiceInfoSheet>();
 		for (String receivableNum : skuIdMap.keySet()) {
 			List<DecathlonInvoiceInfo> detail = skuIdMap.get(receivableNum);
 			Date invDate = detail.get(0).getInvoiceDate();
-			
-			sheets.add(new DecathlonInvoiceInfoSheet(receivableNum, invDate, detail,""));
+
+			sheets.add(new DecathlonInvoiceInfoSheet(receivableNum, invDate, detail, ""));
 		}
-		
-		/*將sheets根據日期排序*/
+
+		/* 將sheets根據日期排序 */
 		Collections.sort(sheets);
-		
-		/*根據日期gen出 inNum=日期+流水號*/
+
+		/* 根據日期gen出 inNum=日期+流水號 */
 		List<String> sheetNameList = new ArrayList<String>();
 		int number = 1;
 		String tempDate = "";
@@ -248,17 +252,82 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 			String dateString = formatter.format(sheet.getInvDate());
 			if (dateString.equals(tempDate)) {
 				number++;
-			}else {
+			} else {
 				number = 1;
 			}
 			sheet.setInvNum(dateString + " " + String.format("%02d", number));
-			//sheets.add(sheet);
+			// sheets.add(sheet);
 			tempDate = dateString;
 		}
-		
+
 		return sheets;
 	}
-	
 
+	/**
+	 * 刪除目錄（資料夾）以及目錄下的檔案
+	 * 
+	 * @param dir 被刪除目錄的檔案路徑
+	 * @return 目錄刪除成功返回true,否則返回false
+	 */
+	public static boolean deleteDirectory(String directorydir) {
+		// 如果dir不以檔案分隔符結尾，自動新增檔案分隔符
+		if (!directorydir.endsWith(File.separator)) {
+			directorydir = directorydir + File.separator;
+		}
+		File dirFile = new File(directorydir);
+		// 如果dir對應的檔案不存在，或者不是一個目錄，則退出
+		if (!dirFile.exists() || !dirFile.isDirectory()) {
+			// "刪除目錄失敗"+name+"目錄不存在！"
+			return false;
+		}
+		boolean flag = true;
+		// 刪除資料夾下的所有檔案(包括子目錄)
+		File[] files = dirFile.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			// 刪除子檔案
+			if (files[i].isFile()) {
+				flag = deleteFile(files[i].getAbsolutePath());
+				if (!flag) {
+					break;
+				}
+			}
+			// 刪除子目錄
+			else {
+				flag = deleteDirectory(files[i].getAbsolutePath());
+				if (!flag) {
+					break;
+				}
+			}
+		}
+
+		if (!flag) {
+			// System.out.println("刪除目錄失敗");
+			return false;
+		}
+
+		// 刪除當前目錄
+		if (dirFile.delete()) {
+			// System.out.println("刪除目錄"+directorydir+"成功！");
+			return true;
+		} else {
+			// System.out.println("刪除目錄"+directorydir+"失敗！");
+			return false;
+		}
+	}
+
+	/**
+	 * 刪除單個檔案
+	 * 
+	 * @param fileName 被刪除檔案的檔名
+	 * @return 單個檔案刪除成功返回true,否則返回false
+	 */
+	public static boolean deleteFile(String fileName) {
+		File file = new File(fileName);
+		if (file.isFile() && file.exists()) {
+			file.delete();// "刪除單個檔案"+name+"成功！"
+			return true;
+		} // "刪除單個檔案"+name+"失敗！"
+		return false;
+	}
 
 }
