@@ -41,8 +41,7 @@ build:
         # - <second tag>
     script:
         - echo "Building deploy package"
-        - npm install
-        - npm run build
+        - mvn clean package
         - echo "Build successful"
     artifacts:
         expire_in: 1 hour
@@ -58,11 +57,11 @@ deploy_production:
     script:
         - echo "Deploying to server"
         # - cp -rv build/* /var/www/html/<destination_folder>/
-        - XCOPY build\*  D:\testBuild\ /S/Y
+        - XCOPY target\*  D:\testjava\ /S/Y
         - echo "Deployed"
-    environment:
-        name: production
-        url: http://127.0.0.1:8100
+    # environment:
+    #     name: production
+    #     url: http://127.0.0.1:8100
     only:
         - master
    
