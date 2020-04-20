@@ -1,0 +1,68 @@
+# before_script:
+#   - echo "begin"
+#   - pwd
+#   # - cd /git/front
+#   - git pull origin master
+
+# after_script:-
+#   - echo "end"
+
+# stages:
+#   - Test
+#   - Build
+
+# # 构建阶段1
+# job1:
+#   stage: Build
+#   script:
+#     - npm install
+#     - npm run build  
+#     - XCOPY build  D:\testBuild\ /s
+#     - all
+#   tags: # 指定使用有 my-tag 标签的runner运行该任务
+#     - test
+#   only:
+#     - master
+# 构建阶段2
+# job2:
+#   stage: Test
+#   script:
+#      - service nginx reload 
+#   tags:
+#     - test 
+
+stages: 
+    - build
+    - deploy
+build:
+    stage: build 
+    tags: 
+        - test
+        # - <second tag>
+    script:
+        - echo "Building deploy package"
+        - npm install
+        - npm run build
+        - echo "Build successful"
+    artifacts:
+        expire_in: 1 hour
+        paths:
+            - build
+    only:
+         - master
+deploy_production:
+    stage: deploy
+    tags: 
+      - test
+      # - <second tag>
+    script:
+        - echo "Deploying to server"
+        # - cp -rv build/* /var/www/html/<destination_folder>/
+        - XCOPY build\*  D:\testBuild\ /S/Y
+        - echo "Deployed"
+    environment:
+        name: production
+        url: http://127.0.0.1:8100
+    only:
+        - master
+   
