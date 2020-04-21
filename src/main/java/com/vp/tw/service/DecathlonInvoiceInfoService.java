@@ -11,9 +11,9 @@ public interface DecathlonInvoiceInfoService {
 
 	public List<DecathlonInvoiceInfo> getDecathlonInvoiceInfoByDateRange(String start, String end);
 
-
-	public String importDataToExcelTemplet(String start, String end)
+	public List<String> importDataToExcelTemplet(String start, String end)
 			throws FileNotFoundException, IOException, ParseException;
-	
-	public String excelToPdf(String start, String end) throws IOException, ParseException;
+
+	public List<String> excelToPdf(String start, String end) throws IOException, ParseException;
+
 }
