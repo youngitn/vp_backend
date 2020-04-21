@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vp.tw.model.vo.t100.DecathlonInvoiceInfo;
 import com.vp.tw.property.FileStorageProperties;
 import com.vp.tw.service.DecathlonInvoiceInfoService;
+import com.vp.tw.service.FileDownloadService;
 import com.vp.tw.util.EnvUtil;
 import com.vp.tw.util.FileStorageUtil;
 
@@ -31,24 +32,27 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://127.0.0.1:8100")
-@Slf4j
+
 public class DecathlonInvoiceInfoController {
 
 	// 注入介面依賴
 	@Autowired
-	private DecathlonInvoiceInfoService service;
-	@Autowired
-	private FileStorageUtil fileStorageUtil;
-	@Autowired
-	private EnvUtil envUtil;
-	@Autowired
-	FileStorageProperties fileStorageProperties;
+	private DecathlonInvoiceInfoService dclInvService;
 
+	@Autowired
+	private FileDownloadService fileDownloadService;
+
+	/**
+	 * get all DecathlonInvoiceInfo.
+	 * 
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	@GetMapping("/DecathlonInvoiceInfoByDate")
-	
-	public List<DecathlonInvoiceInfo> get(@RequestParam String start, @RequestParam String end) {
+	public ResponseEntity<List<DecathlonInvoiceInfo>> test(@RequestParam String start, @RequestParam String end) {
 
-		return service.getDecathlonInvoiceInfoByDateRange(start, end);
+		return ResponseEntity.ok(dclInvService.getDecathlonInvoiceInfoByDateRange(start, end));
 
 	}
 
@@ -63,18 +67,10 @@ public class DecathlonInvoiceInfoController {
 	 * @throws ParseException
 	 */
 	@GetMapping("/DataToExcel")
-	public List<String> exportToExcel(@RequestParam String start, @RequestParam String end) throws Exception {
-		String fileName = "";
-		// 用LIST包裝在前端方能用JSON解析
-		List<String> ret = new ArrayList<>();
-		try {
-			fileName = service.importDataToExcelTemplet(start, end);
+	public ResponseEntity<List<String>> getExcelDownloadUul(@RequestParam String start, @RequestParam String end)
+			throws IOException, ParseException {
 
-			ret.add("http://" + envUtil.getHostname() + ":" + envUtil.getPort() + "/api/files/" + fileName);
-		} catch (Exception e) {
-			ret.add("NoData");
-		}
-		return ret;
+		return ResponseEntity.ok(dclInvService.importDataToExcelTemplet(start, end));
 
 	}
 
@@ -89,21 +85,10 @@ public class DecathlonInvoiceInfoController {
 	 * @throws ParseException
 	 */
 	@GetMapping("/DataToPdf")
-	public List<String> exportPdf(@RequestParam String start, @RequestParam String end)
+	public ResponseEntity<List<String>> exportPdf(@RequestParam String start, @RequestParam String end)
 			throws IOException, ParseException {
 
-		String fileName = "";
-		// 用LIST包裝在前端方能用JSON解析
-		List<String> ret = new ArrayList<>();
-		try {
-			fileName = service.excelToPdf(start, end);
-			ret.add("http://" + envUtil.getHostname() + ":" + envUtil.getPort() + "/api/files/" + fileName);
-		} catch (Exception e) {
-			ret.add("NoData");
-			log.info(e.toString());
-		}
-
-		return ret;
+		return ResponseEntity.ok(dclInvService.excelToPdf(start, end));
 
 	}
 
@@ -116,32 +101,8 @@ public class DecathlonInvoiceInfoController {
 	 */
 	@GetMapping("/files/{fileName:.+}")
 	public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
-		String path = fileStorageProperties.getExcelDir();
 
-		// 判斷檔案類型 區分來源路徑
-		if (fileName.contains("pdf")) {
-			path = fileStorageProperties.getPdfDir();
-		} else if (fileName.contains("zip")) {
-			path = fileStorageProperties.getPdfZipDir();
-		}
-		Resource resource = fileStorageUtil.loadFileAsResource(path + fileName);
-
-		// Try to determine file's content type
-		String contentType = null;
-		try {
-			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-		} catch (IOException ex) {
-			log.info("Could not determine file type.");
-		}
-
-		// Fallback to the default content type if type could not be determined
-		if (contentType == null) {
-			contentType = "application/octet-stream";
-		}
-
-		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-				.body(resource);
+		return fileDownloadService.getFileResponseEntity(fileName, request);
 	}
 
 }

@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +35,7 @@ import com.vp.tw.exception.NoDataException;
 import com.vp.tw.model.vo.t100.DecathlonInvoiceInfo;
 import com.vp.tw.repository.t100.DecathlonInvoiceInfoDao;
 import com.vp.tw.service.DecathlonInvoiceInfoService;
+import com.vp.tw.util.EnvUtil;
 import com.vp.tw.util.ZipDirectoryUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,8 +45,13 @@ import lombok.extern.slf4j.Slf4j;
 public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoService {
 	@Autowired
 	DecathlonInvoiceInfoDao decathlonInvoiceInfoDao;
+
 	@Autowired
 	ZipDirectoryUtil zipUtil;
+
+	@Autowired
+	private EnvUtil envUtil;
+
 	@Value("${file.excel.dir}")
 	private String excelDir;
 	@Value("${decathlon.invoice.export.excel.templet}")
@@ -81,7 +86,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 * @param end   結束日期
 	 */
 	@Override
-	public String excelToPdf(String start, String end) throws IOException, ParseException {
+	public List<String> excelToPdf(String start, String end) throws IOException, ParseException {
 		deleteDirectory(tempExcelPath);
 		deleteDirectory(decathlonInvoiceExportPdfPath);
 		deleteDirectory(zipPath);
@@ -99,7 +104,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		/* read一次樣板 */
 
 		for (DecathlonInvoiceInfoSheet sheet : sheets) {
-			
+
 			String name = sheet.getSheetName();
 			// 暫存資料夾
 			String filePath = tempExcelPath + name + ".xlsx";
@@ -147,7 +152,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		zipOut.close();
 		fos.close();
 
-		return fileName + ".zip";
+		return getDownloadUrl(fileName + ".zip");
 
 	}
 
@@ -174,7 +179,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 * @throws ParseException
 	 */
 	@Override
-	public String importDataToExcelTemplet(String start, String end) throws FileNotFoundException, IOException {
+	public List<String> importDataToExcelTemplet(String start, String end) throws FileNotFoundException, IOException {
 
 		checkDirectories(excelDir);
 		// 檔名處理
@@ -203,7 +208,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 			}
 		}
 
-		return excelFileName;
+		return getDownloadUrl(excelFileName);
 	}
 
 	public List<DecathlonInvoiceInfoSheet> createDecathlonInvoiceInfo(String start, String end) throws NoDataException {
@@ -328,6 +333,18 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 			return true;
 		} // "刪除單個檔案"+name+"失敗！"
 		return false;
+	}
+
+	public List<String> getDownloadUrl(String fileName) {
+
+		// 用LIST包裝在前端方能用JSON解析
+		List<String> ret = new ArrayList<>();
+		try {
+			ret.add("http://" + envUtil.getHostname() + ":" + envUtil.getPort() + "/api/files/" + fileName);
+		} catch (Exception e) {
+			ret.add("NoData");
+		}
+		return ret;
 	}
 
 }
