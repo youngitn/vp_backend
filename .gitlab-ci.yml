@@ -37,7 +37,7 @@ stages:
 build:
     stage: build 
     tags: 
-        - test
+        - winserver
         # - <second tag>
     script:
         - echo "Building deploy package"
