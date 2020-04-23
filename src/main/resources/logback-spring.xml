@@ -3,7 +3,7 @@
 	debug="false">
 	<property name="APP_NAME" value="backend" />
 	<property name="LOG_FILE_PATH"
-		value="/${APP_NAME}/LogFile/logs/" />
+		value="/${APP_NAME}_file/LogFile/logs/" />
 	<property name="CONSOLE_LOG_PATTERN"
 		value="%red(%date{yyyy-MM-dd HH:mm:ss}) %highlight(%-5level) %red([%thread]) %boldMagenta(%logger{50}) %cyan(%msg%n)" />
 
