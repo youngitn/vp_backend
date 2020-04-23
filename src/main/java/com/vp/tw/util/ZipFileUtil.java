@@ -11,7 +11,7 @@ import java.util.zip.ZipOutputStream;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ZipDirectoryUtil {
+public class ZipFileUtil {
 
 //	public static void main(String[] args) throws IOException {
 //		// 壓縮目標目錄

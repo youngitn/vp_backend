@@ -6,7 +6,11 @@ import org.springframework.stereotype.Component;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
+/**
+ * the tool to get local URL info
+ * @author USER
+ *
+ */
 @Component
 public class EnvUtil {
 	@Autowired

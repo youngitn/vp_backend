@@ -19,7 +19,7 @@ import com.vp.tw.exception.MyFileNotFoundException;
 import com.vp.tw.property.FileStorageProperties;
 
 import lombok.extern.slf4j.Slf4j;
-@Slf4j
+
 @Component
 public class FileStorageUtil {
 
@@ -28,7 +28,7 @@ public class FileStorageUtil {
 	@Autowired
 	public FileStorageUtil(FileStorageProperties fileStorageProperties) {
 		this.fileStorageLocation = Paths.get(fileStorageProperties.getExcelDir()).toAbsolutePath().normalize();
-		
+
 		try {
 			Files.createDirectories(this.fileStorageLocation);
 		} catch (Exception ex) {
@@ -42,10 +42,9 @@ public class FileStorageUtil {
 		try {
 			// Normalize file name
 			fileName = StringUtils.cleanPath(file.getOriginalFilename());
-		}catch (Exception ex) {
-			throw new NullPointerException("Got some null! Please try again! msg:"+ex);
+		} catch (Exception ex) {
+			throw new NullPointerException("Got some null! Please try again! msg:" + ex);
 		}
-		
 
 		try {
 			// Check if the file's name contains invalid characters
@@ -56,18 +55,18 @@ public class FileStorageUtil {
 			// Copy file to the target location (Replacing existing file with the same name)
 			Path targetLocation = this.fileStorageLocation.resolve(fileName);
 			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-			
+
 			return fileName;
 		} catch (IOException ex) {
 			throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
 		}
-		
+
 	}
 
 	public Resource loadFileAsResource(String fileName) {
 		try {
 			Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-			
+
 			Resource resource = new UrlResource(filePath.toUri());
 			if (resource.exists()) {
 				return resource;
