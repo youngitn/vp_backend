@@ -52,7 +52,7 @@ build:
 deploy_production:
     stage: deploy
     tags: 
-      - test
+      - winserver
       # - <second tag>
     script:
         - echo "Deploying to server"
