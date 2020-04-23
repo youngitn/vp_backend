@@ -58,7 +58,7 @@ deploy_production:
         - echo "Deploying to server"
         - mvn package
         # - cp -rv build/* /var/www/html/<destination_folder>/
-        - XCOPY target\*  D:\testjava\ /S/Y
+        - XCOPY target\*  D:\backend\ /S/Y
         - echo "Deployed"
     # environment:
     #     name: production

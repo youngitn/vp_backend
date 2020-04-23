@@ -56,7 +56,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	@Autowired
 	private DeleteFileAndDirUtil delDirUtil;
 
-	@Value("${file.excel.dir}")
+	@Value("${file.excel-dir}")
 	private String excelDir;
 	@Value("${decathlon.invoice.export.excel.templet}")
 	private String decathlonInvoiceExportExcelTemplet;
@@ -66,9 +66,9 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	private String decathlonInvoiceExportExcelTempletPng;
 	@Value("${file.excel.temp.dir}")
 	private String tempExcelPath;
-	@Value("${file.pdf.dir}")
+	@Value("${file.pdf-dir}")
 	private String decathlonInvoiceExportPdfPath;
-	@Value("${file.pdf.zip.dir}")
+	@Value("${file.pdf-zip-dir}")
 	private String zipPath;
 
 	/**
