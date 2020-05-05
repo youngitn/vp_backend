@@ -3,35 +3,28 @@ package com.vp.tw.controller;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vp.tw.dto.DecathlonInvoiceInfoByDateRangeDto;
 import com.vp.tw.model.vo.t100.DecathlonInvoiceInfo;
-import com.vp.tw.property.FileStorageProperties;
 import com.vp.tw.service.DecathlonInvoiceInfoService;
 import com.vp.tw.service.FileDownloadService;
-import com.vp.tw.util.EnvUtil;
-import com.vp.tw.util.FileStorageUtil;
-
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://127.0.0.1:8100")
+@CrossOrigin(origins = "http://127.0.0.1:8100") // 可以拿掉
 
 public class DecathlonInvoiceInfoController {
 
@@ -45,50 +38,48 @@ public class DecathlonInvoiceInfoController {
 	/**
 	 * get all DecathlonInvoiceInfo.
 	 * 
-	 * @param start
-	 * @param end
+	 * @param DecathlonInvoiceInfoByDateRangeDto requestDto
 	 * @return
 	 */
 	@GetMapping("/DecathlonInvoiceInfoByDate")
-	public ResponseEntity<List<DecathlonInvoiceInfo>> test(@RequestParam String start, @RequestParam String end) {
+	public ResponseEntity<List<DecathlonInvoiceInfo>> getDecathlonInvoiceInfoByDate(
+			@ModelAttribute DecathlonInvoiceInfoByDateRangeDto requestDto) {
 
-		return ResponseEntity.ok(dclInvService.getDecathlonInvoiceInfoByDateRange(start, end));
+		return ResponseEntity.ok(dclInvService.getDecathlonInvoiceInfoByDateRange(requestDto));
 
 	}
 
 	/**
 	 * 資料寫入excel樣板並存進指定資料夾 同時回傳server端位址給前端產生下載網址
 	 * 
-	 * @param start 開始日期
-	 * @param end   結束日期
+	 * @param DecathlonInvoiceInfoByDateRangeDto requestDto
 	 * @return List 提供給前端解析為json字串以取得下載網址
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws ParseException
 	 */
 	@GetMapping("/DataToExcel")
-	public ResponseEntity<List<String>> getExcelDownloadUul(@RequestParam String start, @RequestParam String end)
-			throws IOException, ParseException {
+	public ResponseEntity<List<String>> getExcelDownloadUul(
+			@ModelAttribute DecathlonInvoiceInfoByDateRangeDto requestDto) throws IOException, ParseException {
 
-		return ResponseEntity.ok(dclInvService.importDataToExcelTemplet(start, end));
+		return ResponseEntity.ok(dclInvService.importDataToExcelTemplet(requestDto));
 
 	}
 
 	/**
 	 * 資料寫入excel樣板並存進指定資料夾 並轉為PDF 同時回傳server端位址給前端產生下載網址
 	 * 
-	 * @param start 開始日期
-	 * @param end   結束日期
+	 * @param DecathlonInvoiceInfoByDateRangeDto requestDto
 	 * @return List 提供給前端解析為json字串以取得下載網址
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws ParseException
 	 */
 	@GetMapping("/DataToPdf")
-	public ResponseEntity<List<String>> exportPdf(@RequestParam String start, @RequestParam String end)
+	public ResponseEntity<List<String>> exportPdf(@ModelAttribute DecathlonInvoiceInfoByDateRangeDto requestDto)
 			throws IOException, ParseException {
 
-		return ResponseEntity.ok(dclInvService.excelToPdf(start, end));
+		return ResponseEntity.ok(dclInvService.excelToPdf(requestDto));
 
 	}
 
