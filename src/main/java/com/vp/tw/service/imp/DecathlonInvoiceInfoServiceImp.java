@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import com.spire.xls.FileFormat;
 import com.spire.xls.Workbook;
+import com.vp.tw.dto.DecathlonInvoiceInfoByDateRangeDto;
 import com.vp.tw.entity.t100.DecathlonInvoiceInfoSheet;
 import com.vp.tw.exception.NoDataException;
 import com.vp.tw.model.vo.t100.DecathlonInvoiceInfo;
@@ -78,9 +79,11 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 * @param end   結束日期
 	 */
 	@Override
-	public List<DecathlonInvoiceInfo> getDecathlonInvoiceInfoByDateRange(String start, String end) {
+	public List<DecathlonInvoiceInfo> getDecathlonInvoiceInfoByDateRange(
+			DecathlonInvoiceInfoByDateRangeDto requestDto) {
 
-		return decathlonInvoiceInfoDao.getInvoiceInfoByDateRange(start, end);
+		return decathlonInvoiceInfoDao.getInvoiceInfoByDateRange(requestDto.getStart(), requestDto.getEnd(),
+				requestDto.getCusNo());
 	}
 
 	/**
@@ -90,7 +93,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 * @param end   結束日期
 	 */
 	@Override
-	public List<String> excelToPdf(String start, String end) throws IOException, ParseException {
+	public List<String> excelToPdf(DecathlonInvoiceInfoByDateRangeDto requestDto) throws IOException, ParseException {
 		delDirUtil.deleteDirectory(tempExcelPath);
 		delDirUtil.deleteDirectory(decathlonInvoiceExportPdfPath);
 		delDirUtil.deleteDirectory(zipPath);
@@ -98,9 +101,10 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		checkDirectories(zipPath);
 		checkDirectories(decathlonInvoiceExportPdfPath);
 		// 檔名處理
+		String start = requestDto.getStart(), end = requestDto.getEnd();
 		String[] dt = start.split("/");
 		String fileName = dt[0].substring(2) + String.format("%02d", Integer.parseInt(dt[1]));
-		List<DecathlonInvoiceInfoSheet> sheets = createDecathlonInvoiceInfo(start, end);
+		List<DecathlonInvoiceInfoSheet> sheets = createDecathlonInvoiceInfo(requestDto);
 
 		/**
 		 * 產生單一sheet EXCEL檔後轉PDF
@@ -108,7 +112,10 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		/* read一次樣板 */
 
 		for (DecathlonInvoiceInfoSheet sheet : sheets) {
-
+			/**
+			 * 補空白detail到15筆
+			 */
+			processDetailList(sheet.getDetails());
 			String name = sheet.getSheetName();
 			// 暫存資料夾
 			String filePath = tempExcelPath + name + ".xlsx";
@@ -183,20 +190,30 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 * @throws ParseException
 	 */
 	@Override
-	public List<String> importDataToExcelTemplet(String start, String end) throws FileNotFoundException, IOException {
+	public List<String> importDataToExcelTemplet(DecathlonInvoiceInfoByDateRangeDto requestDto)
+			throws FileNotFoundException, IOException {
 
 		checkDirectories(excelDir);
+		String start = requestDto.getStart();
+		String end = requestDto.getEnd();
 		// 檔名處理
 		String[] dt = start.split("/");
 		String fileName = dt[0].substring(2) + String.format("%02d", Integer.parseInt(dt[1]));
 		String excelFileName = fileName + ".xlsx";
 		String excelFilePath = excelDir + excelFileName;
 
-		List<DecathlonInvoiceInfoSheet> sheets = createDecathlonInvoiceInfo(start, end);
+		List<DecathlonInvoiceInfoSheet> sheets = createDecathlonInvoiceInfo(requestDto);
 		Collections.sort(sheets);
 		List<String> sheetNameList = new ArrayList<>();
 		for (DecathlonInvoiceInfoSheet sheet : sheets) {
 			sheetNameList.add(sheet.getSheetName());
+
+			/**
+			 * 補空白detail到15筆
+			 */
+			// 傳入的是一個指標
+			processDetailList(sheet.getDetails());
+
 		}
 
 		File initialFile = new File(decathlonInvoiceExportExcelTemplet);
@@ -215,9 +232,13 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		return getDownloadUrl(excelFileName);
 	}
 
-	public List<DecathlonInvoiceInfoSheet> createDecathlonInvoiceInfo(String start, String end) throws NoDataException {
+	public List<DecathlonInvoiceInfoSheet> createDecathlonInvoiceInfo(DecathlonInvoiceInfoByDateRangeDto requestDto)
+			throws NoDataException {
 
-		List<DecathlonInvoiceInfo> all = getDecathlonInvoiceInfoByDateRange(start, end);
+		List<DecathlonInvoiceInfo> all = getDecathlonInvoiceInfoByDateRange(requestDto);
+		String start = requestDto.getStart();
+		String end = requestDto.getEnd();
+
 		if (all.size() == 0) {
 			throw new NoDataException("find no data by date range between " + start + " and " + end);
 
@@ -282,6 +303,60 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 			ret.add("NoData");
 		}
 		return ret;
+	}
+
+	/**
+	 * 補空白detail到15筆
+	 * 
+	 * @param list
+	 */
+	private void processDetailList(List<DecathlonInvoiceInfo> list) {
+		int n = 15 - list.size();
+		for (int i = 1; i <= n; i++) {
+			list.add(new DecathlonInvoiceInfo() {
+
+				@Override
+				public String getUnitPrice() {
+					return null;
+				}
+
+				@Override
+				public String getReceivableNum() {
+					return null;
+				}
+
+				@Override
+				public String getQty() {
+					return null;
+				}
+
+				@Override
+				public String getProductName() {
+					return null;
+				}
+
+				@Override
+				public String getOrderNum() {
+					return null;
+				}
+
+				@Override
+				public String getInvoiceNum() {
+					return null;
+				}
+
+				@Override
+				public Date getInvoiceDate() {
+					return null;
+				}
+
+				@Override
+				public String getCusProductNum() {
+					return null;
+				}
+			});
+
+		}
 	}
 
 }

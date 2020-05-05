@@ -37,7 +37,7 @@ public class ExportExcelAndConvToPdf {
 		
 		DecathlonInvoiceInfoService service = new DecathlonInvoiceInfoServiceImp();
 		//test();
-		service.getDecathlonInvoiceInfoByDateRange("2019/02/11", "2019/02/11");
+		//service.getDecathlonInvoiceInfoByDateRange("2019/02/11", "2019/02/11");
 		
 	}
 
