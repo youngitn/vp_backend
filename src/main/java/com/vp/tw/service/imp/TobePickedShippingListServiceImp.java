@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.vp.tw.model.vo.t100.TobePickedShippingInfo;
 import com.vp.tw.repository.t100.TobePickedShippingListDao;
+import com.vp.tw.requestdto.TobePickedShippingInfoRequestDto;
 import com.vp.tw.service.TobePickedShippingListService;
 
 @Service
@@ -15,9 +16,13 @@ public class TobePickedShippingListServiceImp implements TobePickedShippingListS
 	private TobePickedShippingListDao dao;
 
 	@Override
-	public List<TobePickedShippingInfo> queryByExpShipDate(String expShipDate) {
-
-		return dao.getTobePickedShippingList(expShipDate);
+	public List<TobePickedShippingInfo> queryByExpShipDate(TobePickedShippingInfoRequestDto dto) {
+		int a = dto.getPer_page() * (dto.getPage() - 1);
+		
+//		return dao.getTobePickedShippingList(dto.getExpShipStartDate(),dto.getExpShipEndDate(), dto.getPer_page(),
+//				a);
+		
+		return dao.getTobePickedShippingList(dto.getExpShipStartDate(),dto.getExpShipEndDate());
 	}
 
 }
