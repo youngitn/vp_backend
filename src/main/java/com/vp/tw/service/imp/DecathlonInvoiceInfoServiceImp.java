@@ -30,11 +30,11 @@ import org.springframework.stereotype.Service;
 
 import com.spire.xls.FileFormat;
 import com.spire.xls.Workbook;
-import com.vp.tw.dto.DecathlonInvoiceInfoByDateRangeDto;
 import com.vp.tw.entity.t100.DecathlonInvoiceInfoSheet;
 import com.vp.tw.exception.NoDataException;
 import com.vp.tw.model.vo.t100.DecathlonInvoiceInfo;
 import com.vp.tw.repository.t100.DecathlonInvoiceInfoDao;
+import com.vp.tw.requestdto.DecathlonInvoiceInfoByDateRangeRequestDto;
 import com.vp.tw.service.DecathlonInvoiceInfoService;
 import com.vp.tw.util.DeleteFileAndDirUtil;
 import com.vp.tw.util.EnvUtil;
@@ -80,7 +80,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 */
 	@Override
 	public List<DecathlonInvoiceInfo> getDecathlonInvoiceInfoByDateRange(
-			DecathlonInvoiceInfoByDateRangeDto requestDto) {
+			DecathlonInvoiceInfoByDateRangeRequestDto requestDto) {
 
 		return decathlonInvoiceInfoDao.getInvoiceInfoByDateRange(requestDto.getStart(), requestDto.getEnd(),
 				requestDto.getCusNo());
@@ -93,7 +93,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 * @param end   結束日期
 	 */
 	@Override
-	public List<String> excelToPdf(DecathlonInvoiceInfoByDateRangeDto requestDto) throws IOException, ParseException {
+	public List<String> excelToPdf(DecathlonInvoiceInfoByDateRangeRequestDto requestDto) throws IOException, ParseException {
 		delDirUtil.deleteDirectory(tempExcelPath);
 		delDirUtil.deleteDirectory(decathlonInvoiceExportPdfPath);
 		delDirUtil.deleteDirectory(zipPath);
@@ -190,7 +190,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 	 * @throws ParseException
 	 */
 	@Override
-	public List<String> importDataToExcelTemplet(DecathlonInvoiceInfoByDateRangeDto requestDto)
+	public List<String> importDataToExcelTemplet(DecathlonInvoiceInfoByDateRangeRequestDto requestDto)
 			throws FileNotFoundException, IOException {
 
 		checkDirectories(excelDir);
@@ -232,7 +232,7 @@ public class DecathlonInvoiceInfoServiceImp implements DecathlonInvoiceInfoServi
 		return getDownloadUrl(excelFileName);
 	}
 
-	public List<DecathlonInvoiceInfoSheet> createDecathlonInvoiceInfo(DecathlonInvoiceInfoByDateRangeDto requestDto)
+	public List<DecathlonInvoiceInfoSheet> createDecathlonInvoiceInfo(DecathlonInvoiceInfoByDateRangeRequestDto requestDto)
 			throws NoDataException {
 
 		List<DecathlonInvoiceInfo> all = getDecathlonInvoiceInfoByDateRange(requestDto);

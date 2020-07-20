@@ -1,0 +1,21 @@
+package com.vp.tw.model.vo.t100;
+
+public interface WorkOrderProductionScheduleInfo {
+
+	
+	
+	String getSfaastus();
+	String getSfaadocno();
+	String getSfaa002();
+	String getOoag011();
+	String getSfaa019();
+	String getSfaa010();
+	String getImaal003();
+	String getSfaa012();
+	String getSfaa013();
+	String getSfaa049();
+	String getSfaa050();
+	String getSfaa051();
+	String getSfaa071();
+	String getSfaa056();
+}

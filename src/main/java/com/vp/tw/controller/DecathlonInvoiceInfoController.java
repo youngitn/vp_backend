@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vp.tw.dto.DecathlonInvoiceInfoByDateRangeDto;
 import com.vp.tw.model.vo.t100.DecathlonInvoiceInfo;
+import com.vp.tw.requestdto.DecathlonInvoiceInfoByDateRangeRequestDto;
 import com.vp.tw.service.DecathlonInvoiceInfoService;
 import com.vp.tw.service.FileDownloadService;
 
@@ -38,12 +38,12 @@ public class DecathlonInvoiceInfoController {
 	/**
 	 * get all DecathlonInvoiceInfo.
 	 * 
-	 * @param DecathlonInvoiceInfoByDateRangeDto requestDto
+	 * @param DecathlonInvoiceInfoByDateRangeRequestDto requestDto
 	 * @return
 	 */
 	@GetMapping("/DecathlonInvoiceInfoByDate")
 	public ResponseEntity<List<DecathlonInvoiceInfo>> getDecathlonInvoiceInfoByDate(
-			@ModelAttribute DecathlonInvoiceInfoByDateRangeDto requestDto) {
+			@ModelAttribute DecathlonInvoiceInfoByDateRangeRequestDto requestDto) {
 
 		return ResponseEntity.ok(dclInvService.getDecathlonInvoiceInfoByDateRange(requestDto));
 
@@ -52,7 +52,7 @@ public class DecathlonInvoiceInfoController {
 	/**
 	 * 資料寫入excel樣板並存進指定資料夾 同時回傳server端位址給前端產生下載網址
 	 * 
-	 * @param DecathlonInvoiceInfoByDateRangeDto requestDto
+	 * @param DecathlonInvoiceInfoByDateRangeRequestDto requestDto
 	 * @return List 提供給前端解析為json字串以取得下載網址
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -60,7 +60,7 @@ public class DecathlonInvoiceInfoController {
 	 */
 	@GetMapping("/DataToExcel")
 	public ResponseEntity<List<String>> getExcelDownloadUul(
-			@ModelAttribute DecathlonInvoiceInfoByDateRangeDto requestDto) throws IOException, ParseException {
+			@ModelAttribute DecathlonInvoiceInfoByDateRangeRequestDto requestDto) throws IOException, ParseException {
 
 		return ResponseEntity.ok(dclInvService.importDataToExcelTemplet(requestDto));
 
@@ -69,14 +69,14 @@ public class DecathlonInvoiceInfoController {
 	/**
 	 * 資料寫入excel樣板並存進指定資料夾 並轉為PDF 同時回傳server端位址給前端產生下載網址
 	 * 
-	 * @param DecathlonInvoiceInfoByDateRangeDto requestDto
+	 * @param DecathlonInvoiceInfoByDateRangeRequestDto requestDto
 	 * @return List 提供給前端解析為json字串以取得下載網址
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 * @throws ParseException
 	 */
 	@GetMapping("/DataToPdf")
-	public ResponseEntity<List<String>> exportPdf(@ModelAttribute DecathlonInvoiceInfoByDateRangeDto requestDto)
+	public ResponseEntity<List<String>> exportPdf(@ModelAttribute DecathlonInvoiceInfoByDateRangeRequestDto requestDto)
 			throws IOException, ParseException {
 
 		return ResponseEntity.ok(dclInvService.excelToPdf(requestDto));
