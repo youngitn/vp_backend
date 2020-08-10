@@ -6,5 +6,5 @@ import com.vp.tw.model.vo.t100.TobePickedShippingInfo;
 import com.vp.tw.requestdto.TobePickedShippingInfoRequestDto;
 
 public interface TobePickedShippingListService {
-	List<TobePickedShippingInfo> queryByExpShipDate(TobePickedShippingInfoRequestDto dto);
+	List<TobePickedShippingInfo> getList(TobePickedShippingInfoRequestDto dto);
 }

@@ -11,9 +11,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class TobePickedShippingInfoRequestDto {
 
-	int page;
-	int per_page;
-
+	int page = 1;
+	int per_page = 1;
+	String xmdgdocno;
 	String expShipEndDate;
 	String expShipStartDate;
 

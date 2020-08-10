@@ -22,10 +22,16 @@ import com.vp.tw.requestdto.DecathlonInvoiceInfoByDateRangeRequestDto;
 import com.vp.tw.service.DecathlonInvoiceInfoService;
 import com.vp.tw.service.FileDownloadService;
 
+/**
+ * 
+* @ClassName: DecathlonInvoiceInfoController 
+* @Description: 迪卡農發票匯出
+* @author ytc
+* @date 2020年7月29日 上午9:35:55 
+*
+ */
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://127.0.0.1:8100") // 可以拿掉
-
 public class DecathlonInvoiceInfoController {
 
 	// 注入介面依賴

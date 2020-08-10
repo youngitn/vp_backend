@@ -80,8 +80,19 @@ public interface TobePickedShippingListDao extends JpaRepository<Isaf, String> {
 			@Param("ESED") String expShippingEndDate);
 //			@Param("perPage") int perPage, 
 //			@Param("startRowNum") int startRowNum);
-
-//	@Query(value = aaa)
-//	List<TobePickedShippingInfo> getTobePickedShippingList(@Param("ESD") String expShippingDate);
+	
+	@Query(value = QUERY_STR + " WHERE xmdgdocno = xmdhdocno" + " AND xmdgent = 100 " // 企業編號
+			+ " AND imaalent = xmdhent " // 企業編號
+			+ " AND imaal001 = xmdh006 " // 料件編號
+			+ " AND imaal002 = 'zh_TW' "
+			+ " AND pmaalent = xmdhent " // 企業編號
+			+ " AND pmaal001 = xmdg005 " // 訂單客戶
+			+ " AND pmaal002 = 'zh_TW' "  // 後續參數化
+			+ " AND xmdhsite = 'TWVP' " 
+			+ " AND xmdh056 > xmdh030 "
+			+ " AND xmdgdocno = :XMDGDOCNO "
+			+ " ORDER BY xmdhdocno , xmdhseq ,xmdg028"
+			, nativeQuery = true)
+	List<TobePickedShippingInfo> getTobePickedShippingListByXmdgdocno(@Param("XMDGDOCNO") String expShippingStartDate);
 
 }

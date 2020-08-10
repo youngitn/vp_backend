@@ -11,7 +11,7 @@ import com.vp.tw.entity.t100.Isaf;
  * @author USER
  *
  */
-//@Repository
+@Repository
 public interface IsafDao extends JpaRepository<Isaf, String> {
 
 }
