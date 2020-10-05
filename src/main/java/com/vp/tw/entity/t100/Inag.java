@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import com.vp.tw.entity.t100.embeddedId.InagPK;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ import lombok.NonNull;
  * @author USER
  *
  */
-
+@ApiModel(value = " inag 庫存資訊",description="庫存資訊")
 @Data
 @Entity
 @Table(name = "inag_t", schema = "dsdata")

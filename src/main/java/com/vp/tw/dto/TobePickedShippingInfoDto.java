@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.vp.tw.model.vo.t100.TobePickedShippingInfo;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
 
 @Data
 @AllArgsConstructor

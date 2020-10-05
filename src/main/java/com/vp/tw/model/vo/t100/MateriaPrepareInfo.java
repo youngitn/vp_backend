@@ -1,5 +1,8 @@
 package com.vp.tw.model.vo.t100;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(description="備料資訊")
 public interface MateriaPrepareInfo {
 	
 	String getSfaastus();

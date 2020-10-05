@@ -1,8 +1,12 @@
 package com.vp.tw.model.vo.t100;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import io.swagger.annotations.ApiModel;
+
 import java.util.Date;
 
+@ApiModel(description="庫存資訊")
 public interface MaterialStockInfo {
 
 	String inagent(); // 企業編號

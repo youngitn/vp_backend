@@ -10,6 +10,7 @@ import javax.persistence.Table;
 
 import com.vp.tw.entity.t100.embeddedId.InaylPK;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +22,8 @@ import lombok.NoArgsConstructor;
 * @date 2020年7月29日 上午9:33:02 
 *
  */
+
+@ApiModel(value="Inayl 集團庫位基本資料檔 多語言檔",description="集團庫位基本資料檔 多語言檔")
 @Data
 @Entity
 @Table(name = "inayl_t", schema = "dsdata")

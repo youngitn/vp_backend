@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -18,6 +19,8 @@ import lombok.NonNull;
  * @author USER
  *
  */
+
+@ApiModel(value="Isaf 銷項發票主檔",description="銷項發票主檔")
 @Table(name = "isaf_t", schema = "dsdata")
 @NoArgsConstructor
 @Entity

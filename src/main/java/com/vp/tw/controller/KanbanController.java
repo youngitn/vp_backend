@@ -31,6 +31,9 @@ import com.vp.tw.service.StockService;
 import com.vp.tw.service.TobePickedShippingListService;
 import com.vp.tw.service.WorkOrderProductionScheduleService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
 import lombok.extern.java.Log;
 /**
@@ -41,6 +44,7 @@ import lombok.extern.java.Log;
 * @date 2020年7月29日 上午9:35:05 
 *
  */
+@Api(tags = "T100 看板&相關API", description = "API資料來源為T100")
 @RestController
 @RequestMapping("/kanbanApi")
 @Log
@@ -82,6 +86,7 @@ public class KanbanController {
 	 * @return
 	 * @throws NotFoundException
 	 */
+	@ApiOperation(value="取得待檢貨出貨清單",notes="根據**預計出貨日區間**取得待檢貨出貨清單 參考cxmr999 ")
 	@GetMapping("/getTobePickedShippingInfoList")
 	public ResponseEntity<TobePickedShippingInfoResponseDto> getTobePickedShippingInfoList(
 			@ModelAttribute TobePickedShippingInfoRequestDto dto) throws NotFoundException {
@@ -94,18 +99,6 @@ public class KanbanController {
 
 	}
 
-	@GetMapping("/getTobePickedShippingInfoListByXmdgdocno")
-	public ResponseEntity<TobePickedShippingInfoResponseDto> getTobePickedShippingInfoListByXmdgdocno(
-			@ModelAttribute TobePickedShippingInfoRequestDto dto) throws NotFoundException {
-
-		List<TobePickedShippingInfo> data = tobePickedShippingListByXmdgdocnoService.getList(dto);
-
-		checkListIsEmpty(data);
-
-		return ResponseEntity.ok(new TobePickedShippingInfoResponseDto(data, dto.getPage(), dto.getPer_page()));
-
-	}
-
 	/**
 	 * 待入庫清單 一般 apmr931 pmds000 = '1' 委外 apmr932 pmds000 = '8'
 	 * 
@@ -113,6 +106,7 @@ public class KanbanController {
 	 * @return
 	 * @throws NotFoundException
 	 */
+	@ApiOperation(value="待入庫清單",notes="待入庫清單 一般 apmr931 pmds000 = '1' 委外 apmr932 pmds000 = '8'")
 	@GetMapping("/getPendingStorageList")
 	public ResponseEntity<PendingStorageInfoResponseDto> getPendingStorageList(
 			@ModelAttribute PendingStorageInfoRequestDto dto) throws NotFoundException {
@@ -132,6 +126,7 @@ public class KanbanController {
 	 * @return
 	 * @throws NotFoundException
 	 */
+	@ApiOperation(value="備料清單",notes="取得備料清單")
 	@GetMapping("/getMateriaPrepareList")
 	public ResponseEntity<MateriaPrepareInfoResponseDto> getMateriaPrepareList(
 			@ModelAttribute MateriaPrepareInfoRequestDto dto) throws NotFoundException {
@@ -144,13 +139,14 @@ public class KanbanController {
 	}
 
 	/**
-	 * 工單生產進度表
+	 * 工單生產進度表1
 	 * 
 	 * 
 	 * @param dto
 	 * @return
 	 * @throws NotFoundException
 	 */
+	@ApiOperation(value="工單生產進度表")
 	@GetMapping("/getWorkOrderProductionScheduleList")
 	public ResponseEntity<WorkOrderProductionScheduleInfoResponseDto> getWorkOrderProductionScheduleList(
 			@ModelAttribute WorkOrderProductionScheduleInfoRequestDto dto) throws NotFoundException {
@@ -163,33 +159,6 @@ public class KanbanController {
 
 	}
 
-	/**
-	 * 取得存貨資訊
-	 * 
-	 * @param  search
-	 * @return ResponseEntity<List<Inag>>
-	 * @throws NotFoundException
-	 */
-	@GetMapping("/getStock")
-	public ResponseEntity<List<Inag>> getInag(@RequestParam(value = "search") String search) throws NotFoundException {
-		// Prepare Employee key with all available search by keys (6 in my case)
-
-		// Setting remaining 4 fields
-
-		// Create new Employee ans set the search key
-//		Inag inag = new Inag();
-//		inag.setInag001("4071005001");
-//		inag.setInagsite("TWVP");
-//		inag.setInagent("100");
-//		
-//		 InagSpecification spec = 
-//			      new InagSpecification(new SearchCriteria("inag008", "!=", "0"));
-//		 InagSpecification spec2 = 
-//			      new InagSpecification(new SearchCriteria("inag001", "=", "4ZZ050700223"));
-//		return ResponseEntity.ok(inagDao.findAll(Specification.where(spec).and(spec2)));
-
-		return ResponseEntity.ok(stockService.getStockInfo(search));
-
-	}
+	
 
 }
