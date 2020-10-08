@@ -8,10 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vp.tw.entity.t100.Inag;
 import com.vp.tw.model.vo.t100.MateriaPrepareInfo;
 import com.vp.tw.model.vo.t100.PendingStorageInfo;
 import com.vp.tw.model.vo.t100.TobePickedShippingInfo;
@@ -25,14 +23,12 @@ import com.vp.tw.responsedto.MateriaPrepareInfoResponseDto;
 import com.vp.tw.responsedto.PendingStorageInfoResponseDto;
 import com.vp.tw.responsedto.TobePickedShippingInfoResponseDto;
 import com.vp.tw.responsedto.WorkOrderProductionScheduleInfoResponseDto;
+import com.vp.tw.service.GetListService;
 import com.vp.tw.service.MateriaPrepareService;
-import com.vp.tw.service.PendingStorageService;
 import com.vp.tw.service.StockService;
 import com.vp.tw.service.TobePickedShippingListService;
-import com.vp.tw.service.WorkOrderProductionScheduleService;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import javassist.NotFoundException;
 import lombok.extern.java.Log;
@@ -59,13 +55,16 @@ public class KanbanController {
 	@Autowired
 	private TobePickedShippingListService tobePickedShippingListByXmdgdocnoService;
 
+	@Qualifier("PendingStorageService")
 	@Autowired
-	private PendingStorageService pendingStorageService;
+	private GetListService pendingStorageService;
 
 	@Autowired
 	private MateriaPrepareService materiaService;
+	
+	@Qualifier("workOrderProductionScheduleService")
 	@Autowired
-	private WorkOrderProductionScheduleService workOrderProductionScheduleService;
+	private GetListService workOrderProductionScheduleService;
 
 	@Autowired
 	private InagDao inagDao;

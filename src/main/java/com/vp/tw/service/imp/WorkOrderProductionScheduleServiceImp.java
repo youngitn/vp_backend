@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.vp.tw.model.vo.t100.WorkOrderProductionScheduleInfo;
 import com.vp.tw.repository.t100.WorkOrderProductionScheduleListDao;
 import com.vp.tw.requestdto.WorkOrderProductionScheduleInfoRequestDto;
-import com.vp.tw.service.WorkOrderProductionScheduleService;
-@Service
-public class WorkOrderProductionScheduleServiceImp implements WorkOrderProductionScheduleService {
+import com.vp.tw.service.GetListService;
+@Service("workOrderProductionScheduleService")
+public class WorkOrderProductionScheduleServiceImp implements GetListService {
 	@Autowired
 	private WorkOrderProductionScheduleListDao dao;
 	
@@ -18,15 +18,16 @@ public class WorkOrderProductionScheduleServiceImp implements WorkOrderProductio
 	 * 
 	 */
 	@Override
-	public List<WorkOrderProductionScheduleInfo> getList(WorkOrderProductionScheduleInfoRequestDto dto) {
-		int a = dto.getPer_page() * (dto.getPage() - 1);
+	public List<WorkOrderProductionScheduleInfo> getList(Object dto) {
+		WorkOrderProductionScheduleInfoRequestDto wopsir = (WorkOrderProductionScheduleInfoRequestDto)dto;
+		int a = wopsir.getPer_page() * (wopsir.getPage() - 1);
 		
 		return dao.getWorkOrderProductionScheduleList(
-				dto.getEnt(), 
-				dto.getSite(), 
-				dto.getSfaa020Start(),  //預計完工日 開始
-				dto.getSfaa020End(),    //預計完工日 結束
-				dto.getPer_page(),
+				wopsir.getEnt(), 
+				wopsir.getSite(), 
+				wopsir.getSfaa020Start(),  //預計完工日 開始
+				wopsir.getSfaa020End(),    //預計完工日 結束
+				wopsir.getPer_page(),
 				a);
 	}
 

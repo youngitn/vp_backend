@@ -8,13 +8,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.vp.tw.entity.t100.embeddedId.InagPK;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
