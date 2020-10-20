@@ -5,17 +5,21 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
+
+import com.vp.tw.entity.mdb.embeddedId.MeasureDataPK;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value = " Upload_MeasureData ", description = "庫存資訊")
+@ApiModel(value = " Upload_MeasureData ", description = "優適達")
 @Data
 @Entity
 @Table(name = "Upload_MeasureData")
 @NoArgsConstructor
+@IdClass(MeasureDataPK.class)
 public class MeasureData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -42,12 +46,12 @@ public class MeasureData implements Serializable {
 	private String template;
 
 	//腳本量測資訊ID
-	
+	@Id
 	private String measureUID;
 	
-//	//量測項次
-//	@Column(unique=true)
-//	private int Order;
+	//量測項次
+//	@Id
+//	private String Order;
 	
 	//腳本更新日期
 	private String UpdateTime;
@@ -58,6 +62,7 @@ public class MeasureData implements Serializable {
 	//腳本量測時間
 	private String TIMESTAMP;
 	
+	@Id
 	//ControlItem之量測項目
 	private String Name;
 	

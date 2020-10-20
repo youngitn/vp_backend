@@ -21,7 +21,7 @@ public class MdbServiceImp implements GetListService {
 	@Override
 	public List getList(Object dto) {
 		List<MeasureData> ml = mdd.findAll(Example.of((MeasureData)dto));
-		Collections.sort(ml, new MeasureDataSort()); 
+		//Collections.sort(ml, new MeasureDataSort()); 
 		return ml;
 	}
 	
