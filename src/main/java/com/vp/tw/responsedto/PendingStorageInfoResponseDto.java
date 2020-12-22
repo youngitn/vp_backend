@@ -12,7 +12,7 @@ import lombok.Data;
 public class PendingStorageInfoResponseDto {
 	
 	List<PendingStorageInfo> data;
-	int page = 1;
-	int per_page = 1;
+	String page = "1";
+	String per_page = "1";
 
 }
