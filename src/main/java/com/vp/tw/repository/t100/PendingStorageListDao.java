@@ -144,9 +144,9 @@ public interface PendingStorageListDao extends JpaRepository<Isaf, String> {
 
 	@Query(value = QUERY_STR , nativeQuery = true)
 	List<PendingStorageInfo> getPendingStorageList(@Param("DLANG") String dlang,
-			@Param("ENT") int ent,
+			@Param("ENT") String ent,
 			@Param("SITE") String site,
-			@Param("pmds000") int pmds000);
+			@Param("pmds000") String pmds000);
 	
 	
 //	List<PendingStorageInfo> getPendingStorageList(@Param("DLANG") String dlang,

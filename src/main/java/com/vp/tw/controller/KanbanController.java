@@ -10,17 +10,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.vp.tw.entity.t100.Xmdk;
 import com.vp.tw.model.vo.t100.MateriaPrepareInfo;
 import com.vp.tw.model.vo.t100.PendingStorageInfo;
 import com.vp.tw.model.vo.t100.TobePickedShippingInfo;
 import com.vp.tw.model.vo.t100.WorkOrderProductionScheduleInfo;
 import com.vp.tw.repository.t100.InagDao;
+import com.vp.tw.requestdto.BaseRequestDto;
 import com.vp.tw.requestdto.MateriaPrepareInfoRequestDto;
 import com.vp.tw.requestdto.PendingStorageInfoRequestDto;
 import com.vp.tw.requestdto.TobePickedShippingInfoRequestDto;
 import com.vp.tw.requestdto.WorkOrderProductionScheduleInfoRequestDto;
 import com.vp.tw.responsedto.MateriaPrepareInfoResponseDto;
 import com.vp.tw.responsedto.PendingStorageInfoResponseDto;
+import com.vp.tw.responsedto.ShipInfoResponseDto;
 import com.vp.tw.responsedto.TobePickedShippingInfoResponseDto;
 import com.vp.tw.responsedto.WorkOrderProductionScheduleInfoResponseDto;
 import com.vp.tw.service.GetListService;
@@ -58,6 +61,10 @@ public class KanbanController {
 	@Qualifier("PendingStorageService")
 	@Autowired
 	private GetListService pendingStorageService;
+	
+	@Qualifier("ShipInfoService")
+	@Autowired
+	private GetListService shipInfoService;
 
 	@Autowired
 	private MateriaPrepareService materiaService;
@@ -155,6 +162,27 @@ public class KanbanController {
 
 		return ResponseEntity
 				.ok(new WorkOrderProductionScheduleInfoResponseDto(data, dto.getPage(), dto.getPer_page()));
+
+	}
+	
+	/**
+	 * 當日出貨單資訊
+	 * 
+	 * 
+	 * @param dto
+	 * @return
+	 * @throws NotFoundException
+	 */
+	@ApiOperation(value="當日出貨單資訊")
+	@GetMapping("/getTodayShipInfoList")
+	public ResponseEntity<ShipInfoResponseDto> getTodayShipInfoList(
+			@ModelAttribute BaseRequestDto dto) throws NotFoundException {
+
+		List<Xmdk> data = shipInfoService.getList(dto);
+		checkListIsEmpty(data);
+
+		return ResponseEntity
+				.ok(new ShipInfoResponseDto(data));
 
 	}
 

@@ -9,7 +9,7 @@ import lombok.Data;
 public class PendingStorageInfoRequestDto {
 
 	@ApiModelProperty(value = "企業編號 ", example = "100")
-	private int ent;
+	private String ent;
 
 	@ApiModelProperty(value = "語系", example = "zh_TW")
 	private String dlang;
@@ -18,11 +18,11 @@ public class PendingStorageInfoRequestDto {
 	private String site;
 
 	@ApiModelProperty(value = "類型  一般=1; 委外=8", allowableValues = "1,8" ,example = "1")
-	private int pmds000;
+	private String pmds000;
 
 	@ApiModelProperty(value = "初期開發時用,目前在前端fetch URL中 value預設給1 實際上已無作用 ", example = "1")
-	private int page;
+	private String page;
 
 	@ApiModelProperty(value = "初期開發時用,目前在前端fetch URL中 value預設給5 實際上已無作用 ", example = "5")
-	private int per_page;
+	private String per_page;
 }

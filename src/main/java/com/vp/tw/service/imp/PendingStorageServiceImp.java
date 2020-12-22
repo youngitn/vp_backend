@@ -20,7 +20,7 @@ public class PendingStorageServiceImp implements GetListService {
 	public List<PendingStorageInfo> getList(Object dto) {
 
 		PendingStorageInfoRequestDto ps = (PendingStorageInfoRequestDto) dto;
-		int a = ps.getPer_page() * (ps.getPage() - 1);
+		//int a = ps.getPer_page() * (ps.getPage() - 1);
 //		return dao.getPendingStorageList(dto.getDlang(), dto.getEnt(), dto.getSite(), dto.getPmds000(), dto.getPer_page(), a);
 		return dao.getPendingStorageList(ps.getDlang(), ps.getEnt(), ps.getSite(), ps.getPmds000());
 	}
