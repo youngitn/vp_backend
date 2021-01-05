@@ -35,7 +35,10 @@ import com.zaxxer.hikari.HikariDataSource;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "mdbEntityManagerFactory", basePackages = {
+@EnableJpaRepositories(
+		entityManagerFactoryRef = "mdbEntityManagerFactory", 
+		transactionManagerRef = "mdbTransactionManager",
+		basePackages = {
 		"com.vp.tw.repository.mdb" })
 public class MssqlMdbConfig {
 

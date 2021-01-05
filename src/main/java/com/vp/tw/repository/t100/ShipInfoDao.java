@@ -12,7 +12,7 @@ import com.vp.tw.entity.t100.Xmdk;
 /**
  * 
  * @ClassName: ShipInfoDao
- * @Description: 出貨單資訊
+ * @Description: 出貨單資訊 條件設為取當日七點五十之後
  * @author ytc
  * @date 2020年12月18日 上午11:32:31
  *
