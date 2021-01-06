@@ -22,7 +22,7 @@ public interface ShipInfoDao extends JpaRepository<Xmdk, String> {
 
 	String SELECT = "SELECT XMDKDOCNO,XMDK005,XMDK006,XMDKSTUS,XMDKCRTDT "
 			+ " FROM DSDATA.xmdk_t t "
-			+ " WHERE instr(t.XMDKDOCNO,'VP8628') = 0 AND  t.XMDKCRTDT >= TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD') || ' 07:50','YYYY-MM-DD hh24:mi') AND t.XMDKENT = :ENT AND XMDKSITE = :SITE "
+			+ " WHERE instr(t.XMDKDOCNO,'VP8628') = 0 AND t.xmdk000 = 1 AND t.XMDKSTUS = 'S' AND  t.XMDKCRTDT >= TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD') || ' 07:50','YYYY-MM-DD hh24:mi') AND t.XMDKENT = :ENT AND XMDKSITE = :SITE "
 			+ " ORDER BY XMDKCRTDT DESC";
 
 	@Query(value = SELECT , nativeQuery = true)
