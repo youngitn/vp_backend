@@ -21,4 +21,8 @@ public interface WorkOrderProductionScheduleInfo {
 	String getSfaa051();
 	String getSfaa071();
 	String getSfaa056();
+	String getOocq002();
+	String getOocql004();
+	String getGzcbl004();
+	
 }

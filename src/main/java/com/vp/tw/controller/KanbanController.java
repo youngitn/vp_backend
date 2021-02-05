@@ -11,22 +11,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vp.tw.entity.t100.Xmdk;
+import com.vp.tw.model.vo.t100.Gzcbl;
 import com.vp.tw.model.vo.t100.MateriaPrepareInfo;
 import com.vp.tw.model.vo.t100.PendingStorageInfo;
 import com.vp.tw.model.vo.t100.TobePickedShippingInfo;
 import com.vp.tw.model.vo.t100.WorkOrderProductionScheduleInfo;
 import com.vp.tw.repository.t100.InagDao;
 import com.vp.tw.requestdto.BaseRequestDto;
+import com.vp.tw.requestdto.GzcblRequestDto;
 import com.vp.tw.requestdto.MateriaPrepareInfoRequestDto;
 import com.vp.tw.requestdto.PendingStorageInfoRequestDto;
 import com.vp.tw.requestdto.TobePickedShippingInfoRequestDto;
 import com.vp.tw.requestdto.WorkOrderProductionScheduleInfoRequestDto;
+import com.vp.tw.responsedto.GzcblResponseDto;
 import com.vp.tw.responsedto.MateriaPrepareInfoResponseDto;
 import com.vp.tw.responsedto.PendingStorageInfoResponseDto;
 import com.vp.tw.responsedto.ShipInfoResponseDto;
 import com.vp.tw.responsedto.TobePickedShippingInfoResponseDto;
 import com.vp.tw.responsedto.WorkOrderProductionScheduleInfoResponseDto;
 import com.vp.tw.service.GetListService;
+import com.vp.tw.service.GzcblService;
 import com.vp.tw.service.MateriaPrepareService;
 import com.vp.tw.service.StockService;
 import com.vp.tw.service.TobePickedShippingListService;
@@ -72,13 +76,10 @@ public class KanbanController {
 	@Qualifier("workOrderProductionScheduleService")
 	@Autowired
 	private GetListService workOrderProductionScheduleService;
-
+	
 	@Autowired
-	private InagDao inagDao;
-
-	@Autowired
-	private StockService stockService;
-
+	private GzcblService gzcblService;
+	
 	private void checkListIsEmpty(List<?> list) throws NotFoundException {
 		if (list.isEmpty()) {
 			throw new NotFoundException("因data.size() == 0 ,卻依舊對data作取值操作導致錯誤.");
@@ -152,6 +153,27 @@ public class KanbanController {
 	 * @return
 	 * @throws NotFoundException
 	 */
+	@ApiOperation(value="工單生產進度表By產線區域")
+	@GetMapping("/getWorkOrderProductionScheduleListByArea")
+	public ResponseEntity<WorkOrderProductionScheduleInfoResponseDto> getWorkOrderProductionScheduleListByArea(
+			@ModelAttribute WorkOrderProductionScheduleInfoRequestDto dto) throws NotFoundException {
+		dto.setType("area");
+		List<WorkOrderProductionScheduleInfo> data = workOrderProductionScheduleService.getList(dto);
+		checkListIsEmpty(data);
+		
+		return ResponseEntity
+				.ok(new WorkOrderProductionScheduleInfoResponseDto(data, dto.getPage(), dto.getPer_page()));
+
+	}
+	
+	/**
+	 * 工單生產進度表1
+	 * 
+	 * 
+	 * @param dto
+	 * @return
+	 * @throws NotFoundException
+	 */
 	@ApiOperation(value="工單生產進度表")
 	@GetMapping("/getWorkOrderProductionScheduleList")
 	public ResponseEntity<WorkOrderProductionScheduleInfoResponseDto> getWorkOrderProductionScheduleList(
@@ -159,7 +181,7 @@ public class KanbanController {
 
 		List<WorkOrderProductionScheduleInfo> data = workOrderProductionScheduleService.getList(dto);
 		checkListIsEmpty(data);
-
+		
 		return ResponseEntity
 				.ok(new WorkOrderProductionScheduleInfoResponseDto(data, dto.getPage(), dto.getPer_page()));
 
@@ -180,11 +202,26 @@ public class KanbanController {
 
 		List<Xmdk> data = shipInfoService.getList(dto);
 		checkListIsEmpty(data);
-
+		
 		return ResponseEntity
 				.ok(new ShipInfoResponseDto(data));
 
 	}
+	
+	@ApiOperation(value="取得主要產線別清單")
+	@GetMapping("/getGzcblList")
+	public ResponseEntity<GzcblResponseDto> getGzcblList(
+			@ModelAttribute GzcblRequestDto dto) throws NotFoundException {
+
+		List<Gzcbl> data = gzcblService.getListByGzcbl001(dto.getGzcbl001());
+		checkListIsEmpty(data);
+		
+		return ResponseEntity
+				.ok(new GzcblResponseDto(data));
+
+	}
+	
+	
 
 	
 
