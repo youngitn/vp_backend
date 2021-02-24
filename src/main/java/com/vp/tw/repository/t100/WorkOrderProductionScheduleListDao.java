@@ -75,7 +75,7 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 			+ " ON ooag.ooag001 = SFAA002 " 
 			+ " AND ooag.ooagENT = :ENT "
 			
-			+ " WHERE sfaa020 >= to_date( :SFAA020START ,'yyyy-mm-dd') AND sfaa020 <= to_date( :SFAA020END ,'yyyy-mm-dd') AND sfaaent= :ENT  AND SFAASITE  = :SITE "
+			+ " WHERE sfaa019 >= to_date( :SFAA020START ,'yyyy-mm-dd') AND sfaa019 <= to_date( :SFAA020END ,'yyyy-mm-dd') AND sfaaent= :ENT  AND SFAASITE  = :SITE "
 			+ " AND gzcbl002 = :area AND sfaa012 > sfaa050"
 			+ " AND sfaastus in ('A','C','F','Y') "
 			+ " OFFSET :startRowNum ROWS FETCH NEXT :perPage ROWS ONLY "
