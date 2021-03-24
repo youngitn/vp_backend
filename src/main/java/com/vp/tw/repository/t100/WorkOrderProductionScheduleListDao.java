@@ -44,7 +44,10 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 			+ " LEFT JOIN DSDATA.ooag_T ooag " + " ON ooag.ooag001 = SFAA002 " + " AND ooag.ooagENT = :ENT "
 
 			+ " WHERE sfaa019 >= to_date( :SFAA020START ,'yyyy-mm-dd') AND sfaa019 <= to_date( :SFAA020END ,'yyyy-mm-dd') AND sfaaent= :ENT  AND SFAASITE  = :SITE "
-			+ " AND gzcbl002 = :area AND sfaa012 > sfaa050" + " AND sfaastus in ('A','C','F','Y') "
+			//+ " AND gzcbl002 = :area "
+			+ " AND sfaa012 > sfaa050" 
+			+ " AND sfaastus in ('A','C','F','Y') "
+			+ " AND SFAAUD003 like :area% " 
 			+ " OFFSET :startRowNum ROWS FETCH NEXT :perPage ROWS ONLY ", nativeQuery = true)
 	List<WorkOrderProductionScheduleInfo> getWorkOrderProductionScheduleListByArea(@Param("ENT") int ent,
 			@Param("SITE") String site, @Param("SFAA020START") String sfaa020Start, // 預計完工日 開始
@@ -63,8 +66,12 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 			+ " LEFT JOIN DSDATA.ooag_T ooag " + " ON ooag.ooag001 = SFAA002 " + " AND ooag.ooagENT = :ENT "
 
 			+ " WHERE sfaa019 >= to_date( :SFAA020START ,'yyyy-mm-dd') AND sfaa019 <= to_date( :SFAA020END ,'yyyy-mm-dd') AND sfaaent= :ENT  AND SFAASITE  = :SITE "
-			+ " AND gzcbl002 = :area AND sfaa012 > sfaa050" + " AND sfaastus in ('A','C','F','Y') ", nativeQuery = true)
-
+			//+ " AND gzcbl002 = :area "
+			+ " AND sfaa012 > sfaa050 " 
+			+ " AND sfaastus in ('A','C','F','Y') "
+			+ " AND SFAAUD003 like :area% " 
+			, nativeQuery = true)
+		
 	List<WorkOrderProductionScheduleInfo> getWorkOrderProductionScheduleListByAreaTotalNumber(@Param("ENT") int ent,
 			@Param("SITE") String site, @Param("SFAA020START") String sfaa020Start, // 預計完工日 開始
 			@Param("SFAA020END") String sfaa020End, // 預計完工日 結束
