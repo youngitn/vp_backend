@@ -46,13 +46,14 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 			+ " WHERE sfaa019 >= to_date( :SFAA020START ,'yyyy-mm-dd') AND sfaa019 <= to_date( :SFAA020END ,'yyyy-mm-dd') AND sfaaent= :ENT  AND SFAASITE  = :SITE "
 			//+ " AND gzcbl002 = :area "
 			+ " AND sfaa012 > sfaa050" 
+			+ " AND sfaa057 = :SFAA057 " 
 			+ " AND sfaastus in ('A','C','F','Y') "
 			+ " AND SFAAUD003 like :area% " 
 			+ " OFFSET :startRowNum ROWS FETCH NEXT :perPage ROWS ONLY ", nativeQuery = true)
 	List<WorkOrderProductionScheduleInfo> getWorkOrderProductionScheduleListByArea(@Param("ENT") int ent,
 			@Param("SITE") String site, @Param("SFAA020START") String sfaa020Start, // 預計完工日 開始
 			@Param("SFAA020END") String sfaa020End, // 預計完工日 結束
-			@Param("perPage") int perPage, @Param("startRowNum") int startRowNum, @Param("area") String area);
+			@Param("perPage") int perPage, @Param("startRowNum") int startRowNum, @Param("area") String area,@Param("SFAA057")String sfaa057);
 
 	@Query(value = "SELECT sfaadocno,oocq002,SUBSTR(oocq.oocq002,0,1) as oocqx,oocql004,sfaa020,sfaa012,sfaa013,sfaa019,sfaa050,gzcbl004,ooag011,imaal003,sfaa010,sfaa002,sfaastus,sfaa049,sfaa051,sfaa071  "
 
@@ -67,7 +68,8 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 
 			+ " WHERE sfaa019 >= to_date( :SFAA020START ,'yyyy-mm-dd') AND sfaa019 <= to_date( :SFAA020END ,'yyyy-mm-dd') AND sfaaent= :ENT  AND SFAASITE  = :SITE "
 			//+ " AND gzcbl002 = :area "
-			+ " AND sfaa012 > sfaa050 " 
+			+ " AND sfaa012 > sfaa050 "
+			+ " AND sfaa057 = :SFAA057 " 
 			+ " AND sfaastus in ('A','C','F','Y') "
 			+ " AND SFAAUD003 like :area% " 
 			, nativeQuery = true)
@@ -75,6 +77,7 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 	List<WorkOrderProductionScheduleInfo> getWorkOrderProductionScheduleListByAreaTotalNumber(@Param("ENT") int ent,
 			@Param("SITE") String site, @Param("SFAA020START") String sfaa020Start, // 預計完工日 開始
 			@Param("SFAA020END") String sfaa020End, // 預計完工日 結束
-			 @Param("area") String area);
+			 @Param("area") String area,
+			 @Param("SFAA057")String sfaa057);
 
 }

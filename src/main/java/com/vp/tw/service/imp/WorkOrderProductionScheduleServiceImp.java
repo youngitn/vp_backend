@@ -29,14 +29,15 @@ public class WorkOrderProductionScheduleServiceImp implements GetListService {
 					wopsir.getSite(),
 					wopsir.getSfaa020Start(), // 預計完工日 開始
 					wopsir.getSfaa020End(), // 預計完工日 結束
-					wopsir.getPer_page(), a,wopsir.getArea());
+					wopsir.getPer_page(), a,wopsir.getArea(),wopsir.getSfaa057());
 		}else if("total".equals(wopsir.getType())) {
 			return dao.getWorkOrderProductionScheduleListByAreaTotalNumber(
 					wopsir.getEnt(), 
 					wopsir.getSite(),
 					wopsir.getSfaa020Start(), // 預計完工日 開始
 					wopsir.getSfaa020End(), // 預計完工日 結束
-					wopsir.getArea());
+					wopsir.getArea(),
+					wopsir.getSfaa057());
 		}
 		return dao.getWorkOrderProductionScheduleList(wopsir.getEnt(), wopsir.getSite(), wopsir.getSfaa020Start(), // 預計完工日
 																													// 開始
