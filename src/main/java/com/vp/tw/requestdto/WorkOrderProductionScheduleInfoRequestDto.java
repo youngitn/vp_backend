@@ -13,6 +13,7 @@ public class WorkOrderProductionScheduleInfoRequestDto {
 	private String sfaa020Start; //預計開工日
 	private String sfaa020End; //預計開工日
 	private String area;
+	private String sfaa057;
 	private String type;
 	private int page;
 	private int per_page;
