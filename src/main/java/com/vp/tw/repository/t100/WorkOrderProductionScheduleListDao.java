@@ -47,7 +47,7 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 			//+ " AND gzcbl002 = :area "
 			+ " AND sfaa012 > sfaa050" 
 			+ " AND sfaa057 = :SFAA057 " 
-			+ " AND sfaastus in ('A','C','F','Y') "
+			+ " AND sfaastus in ('A','F','Y') "
 			+ " AND SFAAUD003 like :area% " 
 			+ " OFFSET :startRowNum ROWS FETCH NEXT :perPage ROWS ONLY ", nativeQuery = true)
 	List<WorkOrderProductionScheduleInfo> getWorkOrderProductionScheduleListByArea(@Param("ENT") int ent,
@@ -70,7 +70,7 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 			//+ " AND gzcbl002 = :area "
 			+ " AND sfaa012 > sfaa050 "
 			+ " AND sfaa057 = :SFAA057 " 
-			+ " AND sfaastus in ('A','C','F','Y') "
+			+ " AND sfaastus in ('A','F','Y') "
 			+ " AND SFAAUD003 like :area% " 
 			, nativeQuery = true)
 		
