@@ -14,7 +14,34 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>backend</name>
 	<description>backend API service</description>
-
+	<profiles>
+		<profile>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<repositories>
+				<repository>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<id>central</id>
+					<name>bintray</name>
+					<url>https://jcenter.bintray.com</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+					<id>central</id>
+					<name>bintray-plugins</name>
+					<url>https://jcenter.bintray.com</url>
+				</pluginRepository>
+			</pluginRepositories>
+			<id>bintray</id>
+		</profile>
+	</profiles>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -125,6 +152,12 @@
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.netflix.graphql.dgs/graphql-dgs-spring-boot-starter -->
+		<dependency>
+			<groupId>com.netflix.graphql.dgs</groupId>
+			<artifactId>graphql-dgs-spring-boot-starter</artifactId>
+			<version>3.9.3</version>
 		</dependency>
 	</dependencies>
 	<build>

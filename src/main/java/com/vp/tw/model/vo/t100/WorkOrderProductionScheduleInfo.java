@@ -26,6 +26,8 @@ public interface WorkOrderProductionScheduleInfo {
 	String getOocql004();
 	String getGzcbl004();
 	String getOocqx();
+	String getSfaa017();
+	String getPmaal004();
 	
 	
 }

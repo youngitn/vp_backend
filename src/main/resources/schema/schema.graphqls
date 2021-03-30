@@ -1,0 +1,19 @@
+type Query {
+    shows(title: String ,releaseYear: Int): [Show]
+    showxs:[Show]
+}
+
+type Mutation {
+  showxs:[Show]
+}
+
+type Aaaa {
+	showxs:[Show]
+}
+
+type Show {
+    title: String
+    releaseYear: Int
+    
+}
+

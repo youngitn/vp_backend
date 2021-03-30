@@ -32,7 +32,7 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 			@Param("SFAA020END") String sfaa020End, // 預計完工日 結束
 			@Param("perPage") int perPage, @Param("startRowNum") int startRowNum);
 
-	@Query(value = "SELECT sfaadocno,oocq002,SUBSTR(oocq.oocq002,0,1) as oocqx,oocql004,sfaa020,sfaa012,sfaa013,sfaa019,sfaa050,gzcbl004,ooag011,imaal003,sfaa010,sfaa002,sfaastus,sfaa049,sfaa051,sfaa071  "
+	@Query(value = "SELECT sfaadocno,oocq002,SUBSTR(oocq.oocq002,0,1) as oocqx,oocql004,sfaa020,sfaa012,sfaa013,sfaa019,sfaa050,gzcbl004,ooag011,imaal003,sfaa010,sfaa002,sfaastus,sfaa049,sfaa051,sfaa071,sfaa017,pmaal004  "
 
 			+ " FROM dsdata.SFAA_T st "
 
@@ -42,7 +42,7 @@ public interface WorkOrderProductionScheduleListDao extends JpaRepository<Isaf, 
 			+ " LEFT JOIN  dsdata.gzcbl_t ON gzcbl002 LIKE :area%  AND gzcbl003= 'zh_TW' AND gzcbl001= '18009'"
 			+ " LEFT JOIN DSDATA.IMAAL_T imaal " + " ON imaal.IMAAL001 = SFAA010 AND imaal.IMAALENT = :ENT "
 			+ " LEFT JOIN DSDATA.ooag_T ooag " + " ON ooag.ooag001 = SFAA002 " + " AND ooag.ooagENT = :ENT "
-
+			+ " LEFT JOIN DSDATA.pmaal_T pmaal " + " ON pmaal.pmaal001 = sfaa017 " + " AND pmaal.pmaalent = :ENT "
 			+ " WHERE sfaa019 >= to_date( :SFAA020START ,'yyyy-mm-dd') AND sfaa019 <= to_date( :SFAA020END ,'yyyy-mm-dd') AND sfaaent= :ENT  AND SFAASITE  = :SITE "
 			//+ " AND gzcbl002 = :area "
 			+ " AND sfaa012 > sfaa050" 
