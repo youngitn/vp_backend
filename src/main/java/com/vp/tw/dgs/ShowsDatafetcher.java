@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
-import com.netflix.graphql.dgs.DgsDataFetchingEnvironment;
 import com.netflix.graphql.dgs.InputArgument;
 
 import lombok.extern.log4j.Log4j2;
