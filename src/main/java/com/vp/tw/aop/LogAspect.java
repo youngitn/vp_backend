@@ -22,6 +22,10 @@ public class LogAspect {
 	@Pointcut("execution(* com.vp.tw.controller..*(..))")
 	public void pointcut() {
 	}
+	
+	@Pointcut("execution(* com.vp.tw.dgs..*(..))")
+	public void pointcutGraphql() {
+	}
 
 	@Before("pointcut()")
 	public void before(JoinPoint joinPoint) {
@@ -29,8 +33,21 @@ public class LogAspect {
 		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass().getName()+"-"+joinPoint.getSignature().getName());
 		logger.info("start");
 	}
+	@Before("pointcutGraphql()")
+	public void beforeGraphql(JoinPoint joinPoint) {
 
-	@After("pointcut()")
+		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass().getName()+"-"+joinPoint.getSignature().getName());
+		logger.info("start");
+	}
+
+	@After("pointcutGraphql()")
+	public void afterGraphql(JoinPoint joinPoint) {
+		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass().getName()+"-"+joinPoint.getSignature().getName());
+		logger.info("end");
+
+	}
+	
+	@After("pointcut(),pointcutGraphql()")
 	public void after(JoinPoint joinPoint) {
 		Logger logger = LoggerFactory.getLogger(joinPoint.getTarget().getClass().getName()+"-"+joinPoint.getSignature().getName());
 		logger.info("end");
