@@ -20,7 +20,7 @@ public interface StockService {
 	* @return List<Inag>    返回型別 
 	* @throws
 	 */
-	List<Inag> getStockInfoUseExample(String search);
+	List<Inag> getStockInfoUseExample(Inag inag);
 	
 	/**
 	 * 

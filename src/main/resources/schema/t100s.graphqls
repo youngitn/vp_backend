@@ -1,0 +1,20 @@
+
+
+type Inag {
+    inagent: 	String
+    inagsite: 	String
+    inag001: 	String
+    inag004:	String
+    inaylTest:InaylTest
+    getInagDataLoader(inag001:String):Inag
+    
+}
+
+type InaylTest {
+    inayl001: String
+    inayl003: String
+    
+    
+}
+
+

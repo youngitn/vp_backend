@@ -1,6 +1,12 @@
 type Query {
+	"這是shows"
     shows(title: String ,releaseYear: Int): [Show]
+    "這是showxs"
     showxs:[Show]
+    getInag(inag001:String): [Inag]
+    #getInagByInag(inag:[Inag]): [Inag]
+    getInaylTest(inayl001:String):[InaylTest]
+    
 }
 
 type Mutation {
@@ -10,10 +16,18 @@ type Mutation {
 type Aaaa {
 	showxs:[Show]
 }
-
+ """
+  使用者
+  """
 type Show {
+"這是title"
     title: String
+    "這是XXXX"
     releaseYear: Int
     
+}
+
+input InagInput {
+  inag001: String!
 }
 

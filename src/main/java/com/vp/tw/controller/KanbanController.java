@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vp.tw.entity.t100.Xmdk;
 import com.vp.tw.model.vo.t100.Gzcbl;
 import com.vp.tw.model.vo.t100.MateriaPrepareInfo;
+import com.vp.tw.model.vo.t100.NoShippingNoticeInfo;
 import com.vp.tw.model.vo.t100.PendingStorageInfo;
 import com.vp.tw.model.vo.t100.TobePickedShippingInfo;
 import com.vp.tw.model.vo.t100.WorkOrderInfo;
@@ -27,6 +28,7 @@ import com.vp.tw.model.vo.t100.WorkOrderProductionScheduleInfo;
 import com.vp.tw.requestdto.BaseRequestDto;
 import com.vp.tw.requestdto.GzcblRequestDto;
 import com.vp.tw.requestdto.MateriaPrepareInfoRequestDto;
+import com.vp.tw.requestdto.NoShippingNoticeInfoListRequestDto;
 import com.vp.tw.requestdto.PendingStorageInfoRequestDto;
 import com.vp.tw.requestdto.TobePickedShippingInfoRequestDto;
 import com.vp.tw.requestdto.WorkOrderInfoRequestDto;
@@ -40,6 +42,7 @@ import com.vp.tw.responsedto.WorkOrderProductionScheduleInfoResponseDto;
 import com.vp.tw.service.GetListService;
 import com.vp.tw.service.GzcblService;
 import com.vp.tw.service.MateriaPrepareService;
+import com.vp.tw.service.NoShippingNoticeService;
 import com.vp.tw.service.TobePickedShippingListService;
 import com.vp.tw.service.WorkOrderService;
 
@@ -92,6 +95,9 @@ public class KanbanController {
 
 	@Autowired
 	private WorkOrderService workOrderService;
+	
+	@Autowired
+	private NoShippingNoticeService noShippingNoticeService;
 
 	private void checkListIsEmpty(List<?> list) throws NotFoundException {
 		if (list.isEmpty()) {
@@ -272,6 +278,20 @@ public class KanbanController {
 		}
 
 		List<WorkOrderInfoWithLocation> data = workOrderService.getWorkOrderListWithDetailByLocation(dto);
+		checkListIsEmpty(data);
+
+		return ResponseEntity.ok(data);
+
+	}
+	
+	@ApiOperation(value = "取得已完工入庫、無出貨通知單清單")
+	@GetMapping("/getNoShippingNoticeInfoList")
+	public ResponseEntity<List<NoShippingNoticeInfo>> getNoShippingNoticeInfoList(
+			@ModelAttribute NoShippingNoticeInfoListRequestDto dto) throws NotFoundException, ParseException {
+
+		
+
+		List<NoShippingNoticeInfo> data = noShippingNoticeService.getNoShippingNoticeInfoList(dto);
 		checkListIsEmpty(data);
 
 		return ResponseEntity.ok(data);

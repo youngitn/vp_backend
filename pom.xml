@@ -152,7 +152,7 @@
 			<groupId>com.netflix.graphql.dgs</groupId>
 			<artifactId>graphql-dgs-spring-boot-starter</artifactId>
 			<version>3.6.0</version>
-			
+
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
@@ -163,15 +163,58 @@
 
 	</dependencies>
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<executable>true</executable>
-				</configuration>
-			</plugin>
-		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<executable>true</executable>
+					</configuration>
+				</plugin>
+				<!-- Graphql 自動產生程式碼工具 --> 
+				<!-- 用法指令: -->
+				<!-- mvn io.github.deweyjose:graphqlcodegen-maven-plugin:generate -->
+				<!-- 指令會自動去掃<schemaPaths>下的所有<param>位置,沒設定就抓全部.graphqls -->
+				<!-- <packageName> 表示產出的程式的package 就是看你要產出的code放在專案的哪裡 -->
+				<plugin>
+					<groupId>io.github.deweyjose</groupId>
+					<artifactId>graphqlcodegen-maven-plugin</artifactId>
+					<version>1.8</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>generate</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<schemaPaths>
+							<param>src/main/resources/schema/schema.graphqls</param>
+						</schemaPaths>
+						<packageName>com.vp.tw.dto</packageName>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<phase>generate-sources</phase>
+							<goals>
+								<goal>add-source</goal>
+							</goals>
+							<configuration>
+								<sources>
+									<source>${project.build.directory}/generated-sources</source>
+								</sources>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>

@@ -48,15 +48,18 @@ public class StockServiceImp implements StockService {
 		return inagDao.findAll(spec);
 
 	}
-
 	@Override
-	public List<Inag> getStockInfoUseExample(String search) {
-		Inag inag = new Inag();
-		inag.setInag001("4071005001");
-		inag.setInagsite("TWVP");
-		inag.setInagent("100");
+	public List<Inag> getStockInfoUseExample(Inag search) {
+		
+		
 
-		return inagDao.findAll(Example.of(inag));
+		return inagDao.findAll(Example.of(search));
+	}
+
+	
+	public List<Inag> getStockInfoUseExample(String search) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
