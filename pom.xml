@@ -163,16 +163,18 @@
 
 	</dependencies>
 	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable>
+				</configuration>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<configuration>
-						<executable>true</executable>
-					</configuration>
-				</plugin>
-				<!-- Graphql 自動產生程式碼工具 --> 
+				<!-- Graphql 自動產生程式碼工具 -->
 				<!-- 用法指令: -->
 				<!-- mvn io.github.deweyjose:graphqlcodegen-maven-plugin:generate -->
 				<!-- 指令會自動去掃<schemaPaths>下的所有<param>位置,沒設定就抓全部.graphqls -->
