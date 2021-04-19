@@ -6,7 +6,7 @@
 
 3. Mobile APP資料來源
 
-
+4. local push to gitlab server 將觸發動作-部屬至server(定義檔: .gitlab-ci.yml) 
 
 API ref - by swagger
 
