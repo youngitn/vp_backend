@@ -159,6 +159,15 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20200518</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.netflix.graphql.dgs/graphql-dgs-spring-boot-starter -->
 
 	</dependencies>
@@ -172,13 +181,14 @@
 				</configuration>
 			</plugin>
 		</plugins>
+
+		<!-- Graphql 自動產生程式碼工具 -->
+		<!-- 用法指令: -->
+		<!-- mvn io.github.deweyjose:graphqlcodegen-maven-plugin:generate -->
+		<!-- 指令會自動去掃<schemaPaths>下的所有<param>位置,沒設定就抓全部.graphqls -->
+		<!-- <packageName> 表示產出的程式的package 就是看你要產出的code放在專案的哪裡 -->
 		<pluginManagement>
 			<plugins>
-				<!-- Graphql 自動產生程式碼工具 -->
-				<!-- 用法指令: -->
-				<!-- mvn io.github.deweyjose:graphqlcodegen-maven-plugin:generate -->
-				<!-- 指令會自動去掃<schemaPaths>下的所有<param>位置,沒設定就抓全部.graphqls -->
-				<!-- <packageName> 表示產出的程式的package 就是看你要產出的code放在專案的哪裡 -->
 				<plugin>
 					<groupId>io.github.deweyjose</groupId>
 					<artifactId>graphqlcodegen-maven-plugin</artifactId>
@@ -214,7 +224,6 @@
 						</execution>
 					</executions>
 				</plugin>
-
 			</plugins>
 		</pluginManagement>
 	</build>
