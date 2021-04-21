@@ -28,7 +28,7 @@ public class APIUriCallUtil {
 	* @param @param uri 資源位置
 	* @param @param contentType 
 	* @param @param charset
-	* @param @param reqJSONString    設定檔案 
+	* @param @param reqJSONString req內容
 	* @return void    返回型別 
 	* @throws
 	 */
