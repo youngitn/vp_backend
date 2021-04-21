@@ -100,7 +100,7 @@ public class HrSyncApiController {
 
 		log.info(jo);
 
-		//目前回傳的是T100執行後訊息
+		// 目前回傳的是T100執行後訊息
 		return ResponseEntity.ok(jo);
 
 	}
