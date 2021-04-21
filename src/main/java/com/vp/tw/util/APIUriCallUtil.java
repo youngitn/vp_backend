@@ -28,7 +28,11 @@ public class APIUriCallUtil {
 	* @param @param uri 資源位置
 	* @param @param contentType 
 	* @param @param charset
+<<<<<<< HEAD
 	* @param @param reqJSONString    設定檔案 
+=======
+	* @param @param reqJSONString req內容
+>>>>>>> develop
 	* @return void    返回型別 
 	* @throws
 	 */
@@ -51,4 +55,8 @@ public class APIUriCallUtil {
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> develop
