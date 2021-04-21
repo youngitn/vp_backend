@@ -12,8 +12,4 @@ public class FaceEmpInfoDto {
 	String name;
 	String group;
 	String card_number;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> develop
